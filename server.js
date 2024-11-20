@@ -15,7 +15,7 @@ const server = createServer(app);
 const io = new Server(server);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
+app.use(express.static("public"));
 
 app.get("/" , (req, res) => {
     console.log("Got Request /");
@@ -28,6 +28,6 @@ io.on("connection", (socket) => {
 })
 
 
-app.listen(process.env.PORT , () => {
+server.listen(process.env.PORT , () => {
     console.log(`Server is listening on port: ${process.env.PORT}`);
 })
