@@ -36,6 +36,38 @@ h1{
 
 }
 
+.username-input {
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 18px;
+}
+.username-input input {
+    font-size: 18px;
+}
+
+.username-input button {
+    font-size: 18px;
+    color: white;
+    background-color: green;
+    cursor: pointer;
+    transition: 0.3s ease;
+    border-radius: 5px;
+}
+
+.username-input input::placeholder {
+    font-size: 18px;
+}
+
+
+
+.username-input button:hover {
+    background-color: rgb(146, 86, 202);
+    color: black;
+}
+
+
+
 .video-stream {
     display: flex;
     gap: 20px;
@@ -86,3 +118,4 @@ button.call img {
 button.call:hover {
     background-color: violet;
 }
+
