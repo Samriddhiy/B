@@ -18,20 +18,18 @@ const PeerConnection = (function (){
             ]
         }
         peerconnection = new RTCPeerConnection(config);
-        localStream.getTracks().forEach(track => {
+        localStream.getTracks().forEach((track) => {
             peerconnection.addTrack(track , localStream);
         })
-        peerconnection.ontrack = function(event) {
+        peerconnection.ontrack = function (event) {
             remoteVideo.srcObject = event.streams[0];
         }
-        peerconnection.onicecandidate = function(event) {
+        peerconnection.onicecandidate = function (event) {
             if(event.candidate) {
             socket.emit("icecandidate", event.candidate);
             }
         }
-
-
-
+        return peerconnection;
     }
     return {
         getInstance: () => {
@@ -98,7 +96,6 @@ socket.on("answer", async({from , to, answer}) => {
     await pc.setRemoteDescription(answer);
 })
 
-socket.on("")
 socket.on("icecandidate", async candidate => {
     console.log({ candidate });
     const pc = PeerConnection.getInstance();
@@ -118,12 +115,13 @@ const startMyVideo = async() => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
-            audio: true
+            audio: true,
         });
         console.log({stream});
         localStream = stream;
         localVideo.srcObject = stream;
     } catch (error) {
+        console.log("error in accessing media devices:", error);
     }
 }
 startMyVideo ();

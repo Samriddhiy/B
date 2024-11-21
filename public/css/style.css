@@ -53,13 +53,8 @@ h1{
     cursor: pointer;
     transition: 0.3s ease;
     border-radius: 5px;
+    padding: 10px;
 }
-
-.username-input input::placeholder {
-    font-size: 18px;
-}
-
-
 
 .username-input button:hover {
     background-color: rgb(146, 86, 202);
@@ -70,7 +65,7 @@ h1{
 
 .video-stream {
     display: flex;
-    gap: 20px;
+    gap: 40px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -85,8 +80,6 @@ h1{
 }
 
 video {
-    width: 100%;
-    height: auto;
     border-radius: 10px;
 }
 

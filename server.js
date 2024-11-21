@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
         io.emit("joined", allusers);
     })
 
-    socket.io("offer", ({ from , to, offer }) => {
+    socket.on("offer", ({ from , to, offer }) => {
         console.log({from , to, offer});
         io.to(allusers[to].id).emit("offer", {from, to, offer});
     })
