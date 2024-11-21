@@ -1,8 +1,50 @@
 const createUserBtn = document.getElementById("create-user");
 const username = document.getElementById("username");
 const allusersHtml = document.getElementById("allusers")
-
+const localVideo =document.getElementById("localVideo");
+const remoteVideo =document.getElementById("remoteVideo");
 const socket = io();
+let localStream;
+
+const PeerConnection = (function (){
+    let peerconnection;
+
+    const createPeerConnection = () => {
+        const config = {
+            iceServers: [
+                {
+                    urls: "stun:stun2.l.google.com:19302"
+                }
+            ]
+        }
+        peerconnection = new RTCPeerConnection(config);
+        localStream.getTracks().forEach(track => {
+            peerconnection.addTrack(track , localStream);
+        })
+        peerconnection.ontrack = function(event) {
+            remoteVideo.srcObject = event.streams[0];
+        }
+        peerconnection.onicecandidate = function(event) {
+            if(event.candidate) {
+            socket.emit("icecandidate", event.candidate);
+            }
+        }
+
+
+
+    }
+    return {
+        getInstance: () => {
+            if(!peerconnection){
+                peerconnection = createPeerConnection ();
+            }
+            return peerconnection;
+        }
+    }
+})();
+
+
+
 
 
 createUserBtn.addEventListener("click", (e) => {
@@ -15,14 +57,6 @@ createUserBtn.addEventListener("click", (e) => {
 
 socket.on("joined", allusers =>{
     console.log({allusers});
-
-   // <li>
-       //           <span>Samriddhi (You) </span>
-        //          <button class="call-btn">
-          //          <img width="20" src="/images/phone.png"></img>
-          //        </button>
-   // </li>
-
 
 
     const createUserHtml = () => {
@@ -52,3 +86,44 @@ socket.on("joined", allusers =>{
     createUserHtml();
 })
 
+socket.on("offer", async({from ,to, offer}) =>{
+    const pc= PeerConnection.getInstance();
+    await pc.setRemoteDescription(offer);
+    const answer=await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    socket.emit("answer", {from, to, answer: pc.localDescription});
+})
+socket.on("answer", async({from , to, answer}) => {
+    const pc= PeerConnection.getInstance();
+    await pc.setRemoteDescription(answer);
+})
+
+socket.on("")
+socket.on("icecandidate", async candidate => {
+    console.log({ candidate });
+    const pc = PeerConnection.getInstance();
+    await pc.addIceCandidate(new RTCIceCandidate(candidate));
+})
+
+const startCall =async(user) => {
+    console.log({user})
+    const pc = PeerConnection.getInstance();
+    const offer = await pc.createOffer();
+    console.log({offer});
+    await pc.setLocalDescription(offer)
+    socket.emit("offer", {from: username.value, to: user, offer : pc.localDescription});
+}
+
+const startMyVideo = async() => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        });
+        console.log({stream});
+        localStream = stream;
+        localVideo.srcObject = stream;
+    } catch (error) {
+    }
+}
+startMyVideo ();

@@ -31,6 +31,21 @@ io.on("connection", (socket) => {
         allusers[username]={username , id: socket.id};
         io.emit("joined", allusers);
     })
+
+    socket.io("offer", ({from , to, offer}) => {
+        console.log({from , to, offer});
+        io.to(allusers[to].id).emit("offer", {from , to ,offer});
+    })
+
+    socket.on("answer", ({from, to, answer}) =>{
+        io.to(allusers[from].id).emit("answer",{from, to, answer});
+    })
+
+    socket.on("icecandidate", candidate => {
+        console.log({ candidate});
+
+        socket.broadcast.emit("icecandidate", candidate);
+    })
 })
 
 
