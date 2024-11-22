@@ -46,10 +46,11 @@ io.on("connection", (socket) => {
     })
 
     socket.on("call-ended", (caller) => {
-        const [from, to] =caller;
+        const [from, to] = caller;
         io.to(allusers[from].id).emit("call-ended", caller);
         io.to(allusers[to].id).emit("call-ended", caller);
-    })
+        console.log("Call ended by the other party");
+    });
 
     socket.on("icecandidate", candidate => {
         console.log({ candidate});

@@ -56,6 +56,7 @@ createUserBtn.addEventListener("click", (e) => {
 })
 endCallBtn.addEventListener("click", (e) => {
     socket.emit("call-ended", caller);
+    endCall();
 })
 
 socket.on("joined", allusers =>{
@@ -112,10 +113,11 @@ socket.on("icecandidate", async candidate => {
 })
 
 socket.on("end-call", ({from, to})=> {
-    endCallBtn.style.display= "block";
+    endCallBtn.classList.remove("d-none");
 })
 
-socket.on("call-ended", (caller)=> {
+socket.on("call-ended", ()=> {
+    console.log("call ended by other party");
     endCall();
 })
 
@@ -133,7 +135,11 @@ const endCall = () => {
     const pc= PeerConnection.getInstance();
     if(pc){
         pc.close();
+        peerconnection = null;
     }
+    caller =[];
+    remoteVideo.srcObject = null;
+    endCallBtn.classList.add("d-none");
 }
 
 const startMyVideo = async() => {
