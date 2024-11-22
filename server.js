@@ -18,11 +18,18 @@ const allusers= {};
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static("public"));
+app.use(express.static(join(__dirname, "app")));
 
 app.get("/" , (req, res) => {
     console.log("Got Request /");
     res.sendFile(join (__dirname + "/app/index.html"));
 })
+
+app.get("/chat", (req, res) => {
+    console.log("Got Request /chat");
+    res.sendFile(join(__dirname, "app", "chat.html"));
+});
+
 
 io.on("connection", (socket) => {
     console.log(`Someone conneccted to socket server and socket id is ${socket.id}`);
