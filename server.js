@@ -41,6 +41,16 @@ io.on("connection", (socket) => {
         io.to(allusers[from].id).emit("answer", {from, to, answer});
     })
 
+    socket.on("end-call",({from, to}) => {
+        io.to(allusers[to].id).emit("end-call", {from, to});
+    })
+
+    socket.on("call-ended", (caller) => {
+        const [from, to] =caller;
+        io.to(allusers[from].id).emit("call-ended", caller);
+        io.to(allusers[to].id).emit("call-ended", caller);
+    })
+
     socket.on("icecandidate", candidate => {
         console.log({ candidate});
 

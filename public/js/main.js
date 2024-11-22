@@ -3,8 +3,10 @@ const username = document.getElementById("username");
 const allusersHtml = document.getElementById("allusers")
 const localVideo =document.getElementById("localVideo");
 const remoteVideo =document.getElementById("remoteVideo");
+const endCallBtn = document.getElementById("end-call-btn");
 const socket = io();
 let localStream;
+let caller = [];
 
 const PeerConnection = (function (){
     let peerconnection;
@@ -52,6 +54,9 @@ createUserBtn.addEventListener("click", (e) => {
         usernameContainer.style.display ="none";
     }
 })
+endCallBtn.addEventListener("click", (e) => {
+    socket.emit("call-ended", caller);
+})
 
 socket.on("joined", allusers =>{
     console.log({allusers});
@@ -90,16 +95,28 @@ socket.on("offer", async({from ,to, offer}) =>{
     const answer=await pc.createAnswer();
     await pc.setLocalDescription(answer);
     socket.emit("answer", {from, to, answer: pc.localDescription});
+    caller = {from, to};
 })
 socket.on("answer", async({from , to, answer}) => {
     const pc= PeerConnection.getInstance();
     await pc.setRemoteDescription(answer);
+    endCallBtn.style.display = "block";
+    socket.emit("end-call", {from, to});
+    caller = {from, to};
 })
 
 socket.on("icecandidate", async candidate => {
     console.log({ candidate });
     const pc = PeerConnection.getInstance();
     await pc.addIceCandidate(new RTCIceCandidate(candidate));
+})
+
+socket.on("end-call", ({from, to})=> {
+    endCallBtn.style.display= "block";
+})
+
+socket.on("call-ended", (caller)=> {
+    endCall();
 })
 
 const startCall =async(user) => {
@@ -109,6 +126,14 @@ const startCall =async(user) => {
     console.log({offer});
     await pc.setLocalDescription(offer)
     socket.emit("offer", {from: username.value, to: user, offer : pc.localDescription});
+}
+
+
+const endCall = () => {
+    const pc= PeerConnection.getInstance();
+    if(pc){
+        pc.close();
+    }
 }
 
 const startMyVideo = async() => {
