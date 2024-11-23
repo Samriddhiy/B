@@ -39,6 +39,11 @@ io.on("connection", (socket) => {
         io.emit("joined", allusers);
     })
 
+    socket.on("send-message", (message) => {
+        console.log("Message received: ", message);
+        socket.broadcast.emit("receive-message", message);
+    });
+
     socket.on("offer", ({ from , to, offer }) => {
         console.log({from , to, offer});
         io.to(allusers[to].id).emit("offer", {from, to, offer});
@@ -66,14 +71,6 @@ io.on("connection", (socket) => {
     })
 })
 
-io.on("connection", (socket) => {
-    console.log(`Someone is listening and socket id is ${socket.id}`);
-
-    socket.on("send-message", (message) => {
-        console.log("Message received: ", message);
-        io.emit("receive-message", message);
-    });
-})
 
 
 

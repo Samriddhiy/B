@@ -24,6 +24,15 @@
             onkeydown="handleKeyPress(event)">
             <button id="send-button" onclick="sendMessage()">Send</button>
         </div>
+        <div id="emoji-picker" class="emoji-picker">
+            <span class="emoji" onclick="insertEmoji('😊')">😊</span>
+            <span class="emoji" onclick="insertEmoji('😂')">😂</span>
+            <span class="emoji" onclick="insertEmoji('😎')">😎</span>
+            <span class="emoji" onclick="insertEmoji('😍')">😍</span>
+            <span class="emoji" onclick="insertEmoji('❤️')">❤️</span> 
+            <span class="emoji" onclick="insertEmoji('👏')">👏</span>
+            <button id="emoji-btn" onclick="toggleEmojiPicker()">😀</button>
+        </div>
     </div>
     
 </body>
