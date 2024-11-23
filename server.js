@@ -66,6 +66,16 @@ io.on("connection", (socket) => {
     })
 })
 
+io.on("connection", (socket) => {
+    console.log(`Someone is listening and socket id is ${socket.id}`);
+
+    socket.on("send-message", (message) => {
+        console.log("Message received: ", message);
+        io.emit("receive-message", message);
+    });
+})
+
+
 
 server.listen(process.env.PORT , () => {
     console.log(`Server is listening on port: ${process.env.PORT}`);
