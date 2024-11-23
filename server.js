@@ -69,6 +69,12 @@ io.on("connection", (socket) => {
 
         socket.broadcast.emit("icecandidate", candidate);
     })
+
+    socket.on("icecandidate", ({ candidate, to }) => {
+        if (allusers[to]) {
+            io.to(allusers[to].id).emit("icecandidate", candidate);
+        }
+    });
 })
 
 

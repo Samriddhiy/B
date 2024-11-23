@@ -156,3 +156,50 @@ const startMyVideo = async() => {
     }
 }
 startMyVideo ();
+
+async function shareScreen(peerConnection, localStream) {
+    try {
+        const screenStream = await startScreenShare();
+    
+        if (screenStream) {
+            const screenTrack = screenStream.getVideoTracks()[0];
+            const sender = peerConnection.getSenders().find(s => s.track.kind === 'video');
+    
+    
+            if (sender) {
+                await sender.replaceTrack(screenTrack);
+    
+                const offer = await peerConnection.createOffer();
+                await peerConnection.setLocalDescription(offer);
+                socket.emit('offer', { from: username.value, to: caller.to, offer });
+    
+                screenTrack.onended = () => {
+                    sender.replaceTrack(localStream.getVideoTracks()[0]);
+                    screenShareBtn.innerText = "Share Screen";
+                    isSharingScreen = false;
+                };
+            }
+        }
+    }
+    catch (error) {
+        console.error("Error sharing screen:", error);
+        
+    }
+}
+
+const screenShareBtn = document.getElementById('screenShareBtn');
+let isSharingScreen = false;
+
+screenShareBtn.addEventListener('click', async() => {
+    const peerConnection = PeerConnection.getInstance();
+    if (!isSharingScreen) {
+        await shareScreen(PeerConnection.getInstance(), localStream);
+        screenShareBtn.innerText = "Stop Sharing";
+        isSharingScreen = true;
+    } else {
+        
+        screenShareBtn.innerText = "Share Screen";
+        isSharingScreen = false;
+    }
+});
+
