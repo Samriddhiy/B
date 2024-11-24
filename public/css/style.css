@@ -3,53 +3,80 @@
     padding: 0px;
 
 }
+body {
+    background: linear-gradient(to bottom, rgb(245, 247, 250), rgb(195, 207, 226));
+    color: rgb(51, 51, 51);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
 h1{
     text-align: center;
     margin-top: 20px;
     font-size: 2.5rem;
+    color: rgb(74, 144, 226);
 }
 .caller-list-wrapper {
-    background-color: white;
-    padding: 15px;
-    border-radius: 0 8px 8px 0;
-    width: 120px;
-    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
+    background-color: rgb(238, 242, 247);
+    padding: 15px;
+    border-radius: 12px 0 0 12px;
+    width: 180px;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.caller-list-heading {
+    font-size: 1.5rem;
+    color: rgb(74, 144, 226);
+    margin-bottom: 15px;
+}
+
+.caller-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
 }
 
 .video-call-container {
-    margin-left: 150px;
+    margin-left: 200px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    background-color: whitesmoke;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 90vh;
-
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 12px 12px 0;
 }
 
 .username-input {
+    display: flex;
     align-items: center;
-    padding: 20px;
+    gap: 10px;
+    margin-bottom: 30px;
     border-radius: 8px;
     font-size: 18px;
 }
 .username-input input {
     font-size: 18px;
+    padding: 20px;
 }
 
 .username-input button {
     font-size: 18px;
     color: white;
-    background-color: rgb(0, 123, 255);;
+    background-color: rgb(74, 144, 226);;
     cursor: pointer;
     transition: 0.3s ease;
     border-radius: 5px;
@@ -57,8 +84,7 @@ h1{
 }
 
 .username-input button:hover {
-    background-color: rgb(0, 86, 179);
-    color: black;
+    background-color: rgb(53, 122, 189);
 }
 
 
@@ -72,10 +98,9 @@ h1{
 }
 
 .local-video, .remote-video {
-    background-color: black;
-    border: 2px solid rgba(92, 92, 233, 0.9);
+    background-color: rgb(240, 244, 248);
+    border: 2px solid rgb(74, 144, 226);
     border-radius: 10px;
-    max-width: 45%;
     
 }
 
@@ -94,10 +119,11 @@ button.call {
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background-color: black;
+    background-color: rgb(255, 77, 79);
     border: white;
     border-radius: 50%;
     width: 50px;
+    margin-bottom: 30px;
     height: 50px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -106,9 +132,30 @@ button.call {
 button.call img {
     width: 25px;
     height: 30px;
+    align-items: center;
 }
 
 button.call:hover {
-    background-color: red;
+    background-color: rgb(227, 51, 53);
+    transform: scale(1.1);
+}
+
+/* #screenShareBtn:hover { */
+    /* background-color: rgb(69, 103, 196); */
+ /* } */ 
+
+.btn {
+    text-decoration: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 30px;
+    background-color: #6c63ff;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #584eda;
 }
 
