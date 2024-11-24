@@ -5,11 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "npm i",
     "start": "nodemon server.js "
+    
   },
   "author": "Samriddhi",
   "license": "ISC",
   "dependencies": {
+    "build": "^0.1.4",
     "dotenv": "^16.4.5",
     "emoji-button": "^2.2.2",
     "express": "^4.21.1",
