@@ -75,6 +75,18 @@ io.on("connection", (socket) => {
             io.to(allusers[to].id).emit("icecandidate", candidate);
         }
     });
+
+    socket.on("disconnect", () => {
+        console.log(`Socket ID: ${socket.id} disconnected`);
+        const disconnectedUser = Object.keys(allusers).find(
+            (username) => allusers[username].id === socket.id
+        );
+        if (disconnectedUser) {
+            console.log(`${disconnectedUser} has disconnected`);
+            delete allusers[disconnectedUser];
+        }
+        o.emit("joined", allusers);
+    });
 })
 
 
@@ -83,3 +95,4 @@ io.on("connection", (socket) => {
 server.listen(process.env.PORT , () => {
     console.log(`Server is listening on port: ${process.env.PORT}`);
 })
+
